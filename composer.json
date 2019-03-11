@@ -8,6 +8,11 @@
       "email": "kontakt@fajuu.pl"
     }
   ],
+  "autoload": {
+    "classmap": [
+      "FBot.php"
+    ]
+  },
   "require": {
     "php-curl-class/php-curl-class": "8.5"
   }
