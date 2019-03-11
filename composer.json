@@ -1,6 +1,7 @@
 {
   "name": "fajuu/fbot",
   "description": "Simple PHP bot for messenger.",
+  "minimum-stability": "stable",
   "license": "MIT",
   "authors": [
     {
