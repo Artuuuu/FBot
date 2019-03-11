@@ -1,0 +1,14 @@
+{
+  "name": "Fajuu/FBot",
+  "description": "Simple PHP bot for messenger.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Fajuu",
+      "email": "kontakt@fajuu.pl"
+    }
+  ],
+  "require": {
+    "php-curl-class/php-curl-class": "8.5"
+  }
+}
