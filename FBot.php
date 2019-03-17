@@ -15,11 +15,11 @@ class FBot
     if(!$config): die('Config not found!'); exit; endif;
     
     /* Token Verify */
-    if(@$_REQUEST['hub_verify_token'] === $config['verifyToken']): echo $_REQUEST['hub_challenge']; exit; endif;
+    if(@$_REQUEST['hub_verify_token'] === $config['verifyToken'] ): echo $_REQUEST['hub_challenge']; exit; endif;
     
     /* Input Check */
     $input = json_decode(file_get_contents('php://input'), true);
-    if(!$input): die('Empty input!'); exit; endif;
+    if(!$input): die("You're not Facebook."); exit; endif;
     $input = $input['entry'][0]['messaging'][0];
     
     /* Curl Library */
@@ -51,27 +51,39 @@ class FBot
   #
   #
   #
-  private function send($data = null) {  $this->curl->post("https://graph.facebook.com/{$this->config['version']}/me/messages?access_token={$this->config['accessToken']}", $this->persona ? array_merge($data, ['persona_id'=>$this->persona]) : $data);  }
+  private function send($data = null){
+    $this->curl->post("https://graph.facebook.com/{$this->config['version']}/me/messages?access_token={$this->config['accessToken']}", $this->persona ? array_merge($data, [ 'persona_id' => $this->persona ] ) : $data);
+    $this->response = $this->curl->response;
+  }
   #
   #
   public function message_text($message = null)
   {
-    $this->send(['recipient' => [ 'id' => $this->sender ], 'message' => [ 'text' => $message ]]);
+    $this->send( ['recipient' => [ 'id' => $this->sender ], 'message' => [ 'text' => $message ] ] );
+  }
+  #
+  public function quick_replies($text = null, $quick_replies = null)
+  {
+    $this->send( ['recipient' => [ 'id' => $this->sender ], 'message' => [ 'text' => $text, 'quick_replies' => $quick_replies ] ] );
   }
   #
   public function sender_action($type = null)
   {
-    $this->send(['recipient' => [ 'id' => $this->sender ], 'sender_action' => $type]);
+    $this->send( ['recipient' => [ 'id' => $this->sender ], 'sender_action' => $type ] );
   }
   #
   #
   #
-  private function request($data = null) {  $this->curl->post("https://graph.facebook.com/{$this->config['version']}/me/messenger_profile?access_token={$this->config['accessToken']}", $data);  }
+  private function request($data = null)
+  {
+    $this->curl->post("https://graph.facebook.com/{$this->config['version']}/me/messenger_profile?access_token={$this->config['accessToken']}", $data);
+    $this->response = $this->curl->response;
+  }
   #
   #
   public function get_started($payload = null)
   {
-    $this->request(['get_started' => [ 'payload' => $payload ]]);
+    $this->request( ['get_started' => [ 'payload' => $payload ] ] );
   }
   #
   #
