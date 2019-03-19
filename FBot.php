@@ -1,5 +1,4 @@
 <?php
-namespace Fajuu;
 use \Curl\Curl;
 #
 class FBot
