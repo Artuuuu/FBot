@@ -4,12 +4,15 @@ use \Curl\Curl;
 class FBot
 {
   #
+  private $data;
   private $config;
   private $curl;
   #
   #
   public function __construct($config = null)
   {
+    #
+    
     /* Config Check */
     if(!$config): die('Config not found!'); exit; endif;
     
@@ -38,51 +41,149 @@ class FBot
     $this->qr_payload = $input['message']['quick_reply']['payload'];
     $this->payload = $input['postback']['payload'];
     
+    #
   }
+  #
+  #
   #
   #
   #
   public function user($data)
   {
+    #
     $this->curl->get("https://graph.facebook.com/{$this->sender}?fields={$data}&access_token={$this->config['accessToken']}");
     return $this->curl->response->{$data};
+    #
   }
   #
   #
   #
-  private function send($data = null){
-    $this->curl->post("https://graph.facebook.com/{$this->config['version']}/me/messages?access_token={$this->config['accessToken']}", $this->persona ? array_merge($data, [ 'persona_id' => $this->persona ] ) : $data);
+  #
+  #
+  private function send($data = null)
+  {
+    #
+    $this->data = $this->persona ? array_merge($data, [ 'persona_id' => $this->persona ] ) : $data;
+    $this->curl->post("https://graph.facebook.com/{$this->config['version']}/me/messages?access_token={$this->config['accessToken']}", $this->data);
     $this->response = $this->curl->response;
+    #
   }
+  #
   #
   #
   public function message_text($message = null)
   {
-    $this->send( ['recipient' => [ 'id' => $this->sender ], 'message' => [ 'text' => $message ] ] );
+    #
+    $this->send(
+      [
+        'recipient' =>
+        [
+          'id' => $this->sender
+        ],
+        'message' =>
+        [
+          'text' => $message
+        ]
+      ]
+    );
+    #
   }
+  #
+  #
   #
   public function quick_replies($text = null, $quick_replies = null)
   {
-    $this->send( ['recipient' => [ 'id' => $this->sender ], 'message' => [ 'text' => $text, 'quick_replies' => $quick_replies ] ] );
+    #
+    $this->send(
+      [
+        'recipient' =>
+        [
+          'id' => $this->sender
+        ],
+        'message' =>
+        [
+          'text' => $text,
+          'quick_replies' => $quick_replies
+        ]
+      ]
+    );
+    #
   }
+  #
+  #
   #
   public function sender_action($type = null)
   {
-    $this->send( ['recipient' => [ 'id' => $this->sender ], 'sender_action' => $type ] );
+    #
+    $this->send(
+      [
+        'recipient' =>
+        [
+          'id' => $this->sender
+        ],
+        'sender_action' => $type
+      ]
+    );
+    #
   }
+  #
+  #
+  #
+  public function generic($elements = null)
+  {
+    #
+    $this->send(
+      [
+        'recipient' =>
+        [
+          'id' => $this->sender
+        ],
+        'message' =>
+        [
+          'attachment' =>
+          [
+            "type" => "template",
+            "payload" => [
+              "template_type" => "generic",
+              "elements" =>
+              [
+                $elements
+              ]
+            ]
+          ]
+        ]
+      ]
+    );
+    #
+  }
+  #
+  #
   #
   #
   #
   private function request($data = null)
   {
-    $this->curl->post("https://graph.facebook.com/{$this->config['version']}/me/messenger_profile?access_token={$this->config['accessToken']}", $data);
+    #
+    $this->data = $data;
+    $this->curl->post("https://graph.facebook.com/{$this->config['version']}/me/messenger_profile?access_token={$this->config['accessToken']}", $this->data);
     $this->response = $this->curl->response;
+    #
   }
+  #
   #
   #
   public function get_started($payload = null)
   {
-    $this->request( ['get_started' => [ 'payload' => $payload ] ] );
+    #
+    $this->request(
+      [
+        'get_started' =>
+        [
+          'payload' => $payload
+        ]
+      ]
+    );
+    #
   }
   #
   #
