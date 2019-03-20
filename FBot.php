@@ -33,6 +33,7 @@ class FBot
     $this->curl = $curl;
     $this->config = $config;
     $this->persona = null;
+    $this->input = $input;
     $this->sender = $input['sender']['id'];
     $this->recipient = $input['recipient']['id'];
     $this->message = $input['message'];
