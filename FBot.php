@@ -49,6 +49,24 @@ class FBot
   #
   #
   #
+  public function lang($words)
+  {
+    #
+    if(!$this->config["localeFolder"]): die("localeFolder not configured!"); exit; endif;
+    $lang = Yaml::parse(@file_get_contents($this->config["localeFolder"]."/{$this->user("locale")}.yml"))[$this->user("gender")] ?? Yaml::parse(file_get_contents($this->config["localeFolder"]."/en_US.yml"))[$this->user("gender")];
+    foreach($words as $word)
+      $lang = $lang[$word];
+    preg_match_all("|{(.*)}|U", $lang, $find);
+    foreach($find[1] as $find)
+      $lang = str_replace('{'.$find.'}', $this->user($find), $lang);
+    return $lang;
+    #
+  }
+  #
+  #
+  #
+  #
+  #
   public function user($data)
   {
     #
