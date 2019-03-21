@@ -1,5 +1,6 @@
 <?php
 use \Curl\Curl;
+use Symfony\Component\Yaml\Yaml;
 #
 class FBot
 {
