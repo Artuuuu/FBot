@@ -1,6 +1,6 @@
 <?php namespace Fajuu;
 #
-use \Curl\Curl;
+use Curl\Curl;
 use Symfony\Component\Yaml\Yaml;
 #
 class FBot
@@ -28,7 +28,7 @@ class FBot
     $input = $input["entry"][0]["messaging"][0];
     
     /* Curl Library */
-    $curl = new Curl();
+    $curl = new Curl;
     $curl->setHeader("Content-Type", "application/json");
     $curl->setHeader("User-Agent", "FajuuFBot / beta");
     
