@@ -7,7 +7,8 @@ class FBot
 {
   #
   #
-  private $data;  // $fbot->message_text(json_encode($fbot->data));
+  public $data;  // what you sent to Facebook   $fbot->message_text(json_encode($fbot->data));
+  public $response;  // what you got from Facebook   $fbot->message_text(json_encode($fbot->response));
   private $config;
   private $curl;
   #
