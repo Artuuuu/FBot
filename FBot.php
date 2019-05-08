@@ -1,9 +1,11 @@
-<?php
+<?php namespace Fajuu;
+#
 use \Curl\Curl;
 use Symfony\Component\Yaml\Yaml;
 #
 class FBot
 {
+  #
   #
   private $data;  // $fbot->message_text(json_encode($fbot->data));
   private $config;
@@ -49,7 +51,6 @@ class FBot
   #
   #
   #
-  #
   public function lang($words)
   {
     #
@@ -67,7 +68,6 @@ class FBot
   #
   #
   #
-  #
   public function user($data)
   {
     #
@@ -75,7 +75,6 @@ class FBot
     return $this->curl->response->{$data};
     #
   }
-  #
   #
   #
   #
@@ -174,7 +173,6 @@ class FBot
   #
   #
   #
-  #
   private function request($data)
   {
     #
@@ -199,7 +197,6 @@ class FBot
     );
     #
   }
-  #
   #
   #
 }
