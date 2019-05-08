@@ -3,7 +3,7 @@
 use Curl\Curl;
 use Symfony\Component\Yaml\Yaml;
 #
-class FBotest
+class FBot
 {
   #
   #
