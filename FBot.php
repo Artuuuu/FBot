@@ -3,7 +3,7 @@
 use Curl\Curl;
 use Symfony\Component\Yaml\Yaml;
 #
-class FBot
+class FBotest
 {
   #
   #
@@ -12,20 +12,14 @@ class FBot
   private $curl;
   #
   #
-  public function __construct($config)
+  public function __construct($config = null)
   {
     #
     
-    /* Config Check */
-    if(!$config): die("Config not found!"); exit; endif;
-    
-    /* Token Verify */
-    if(@$_REQUEST["hub_verify_token"] === $config["verifyToken"] ): echo $_REQUEST["hub_challenge"]; exit; endif;
-    
-    /* Input Check */
-    $input = json_decode(file_get_contents("php://input"), true);
-    if(!$input): die("You are not Facebook."); exit; endif;
-    $input = $input["entry"][0]["messaging"][0];
+    /* Checks and Verify */
+    $this->config = $config or die("Config not found!");
+    if(@$_REQUEST["hub_verify_token"] === $this->config["verifyToken"]) echo $_REQUEST["hub_challenge"];
+    $this->input = json_decode(file_get_contents("php://input"), true) or die("You are not Facebook.");
     
     /* Curl Library */
     $curl = new Curl;
@@ -34,16 +28,15 @@ class FBot
     
     /* Variables */
     $this->curl = $curl;
-    $this->config = $config;
     $this->persona = null;
-    $this->input = $input;
-    $this->sender = $input["sender"]["id"];
-    $this->recipient = $input["recipient"]["id"];
-    $this->message = $input["message"];
-    $this->postback = $input["postback"];
-    $this->text = $input["message"]["text"];
-    $this->qr_payload = $input["message"]["quick_reply"]["payload"];
-    $this->payload = $input["postback"]["payload"];
+    $this->input = $this->input["entry"][0]["messaging"][0];
+    $this->sender = $this->input["sender"]["id"];
+    $this->recipient = $this->input["recipient"]["id"];
+    $this->message = $this->input["message"];
+    $this->postback = $this->input["postback"];
+    $this->text = $this->input["message"]["text"];
+    $this->qr_payload = $this->input["message"]["quick_reply"]["payload"];
+    $this->payload = $this->input["postback"]["payload"];
     
     #
   }
@@ -54,13 +47,13 @@ class FBot
   public function lang($words)
   {
     #
-    if(!$this->config["localeFolder"]): die("localeFolder not configured!"); exit; endif;
-    $lang = Yaml::parse(@file_get_contents($this->config["localeFolder"]."/{$this->user("locale")}.yml"))[$this->user("gender")] ?? Yaml::parse(file_get_contents($this->config["localeFolder"]."/en_US.yml"))[$this->user("gender")];
+    $ldir = $this->config["localeFolder"] or die("localeFolder is not setted!");
+    $lang = Yaml::parse(@file_get_contents("{$ldir}/{$this->user("locale")}.yml"))[$this->user("gender")] ?? Yaml::parse(@file_get_contents("{$ldir}/en_US.yml"))[$this->user("gender")];
     foreach($words as $word)
       $lang = $lang[$word];
-    preg_match_all("|{(.*)}|U", $lang, $find);
+    preg_match_all("|{(.*)}|", $lang, $find);
     foreach($find[1] as $find)
-      $lang = str_replace("{".$find."}", $this->user($find), $lang);
+      $lang = str_replace("{{$find}}", $this->user($find), $lang);
     return $lang;
     #
   }
@@ -90,7 +83,7 @@ class FBot
   #
   #
   #
-  public function message_text($message)
+  public function say($text, $quick_replies = null)
   {
     #
     $this->send(
@@ -99,31 +92,7 @@ class FBot
         [
           "id" => $this->sender
         ],
-        "message" =>
-        [
-          "text" => $message
-        ]
-      ]
-    );
-    #
-  }
-  #
-  #
-  #
-  public function quick_replies($text, $quick_replies)
-  {
-    #
-    $this->send(
-      [
-        "recipient" =>
-        [
-          "id" => $this->sender
-        ],
-        "message" =>
-        [
-          "text" => $text,
-          "quick_replies" => $quick_replies
-        ]
+        "message" => $quick_replies ? array_merge(["text" => $text], ["quick_replies" => $quick_replies]) : ["text" => $text]
       ]
     );
     #
