@@ -17,5 +17,14 @@
   "require": {
     "symfony/yaml": "^4.2",
     "guzzlehttp/guzzle": "~6.0"
+  },
+  "scripts": {
+    "post-update-cmd": "MyVendor\\MyClass::postUpdate",
+    "post-package-install": [
+      "echo post-package-install"
+    ],
+    "post-install-cmd": [
+      "echo post-install-cmd"
+    ]
   }
 }
