@@ -1,6 +1,6 @@
 <?php namespace Fajuu;
 #
-use Curl\Curl;
+use GuzzleHttp\Client;
 use Symfony\Component\Yaml\Yaml;
 #
 class FBot
@@ -10,7 +10,7 @@ class FBot
   public $data;  // what you sent to Facebook   $fbot->message_text(json_encode($fbot->data));
   public $response;  // what you got from Facebook   $fbot->message_text(json_encode($fbot->response));
   private $config;
-  private $curl;
+  private $client;
   #
   #
   public function __construct($config = null)
@@ -22,13 +22,17 @@ class FBot
     if(@$_REQUEST["hub_verify_token"] === $this->config["verifyToken"]) echo $_REQUEST["hub_challenge"];
     $this->input = json_decode(file_get_contents("php://input"), true) or die("You are not Facebook.");
     
-    /* Curl Library */
-    $curl = new Curl;
-    $curl->setHeader("Content-Type", "application/json");
-    $curl->setHeader("User-Agent", "FajuuFBot / beta");
+    /* GuzzleHttp Client */
+    $client = new Client([
+      "base_uri" => "https://graph.facebook.com/",
+      "headers" => [
+        "Content-Type" => "application/json",
+        "User-Agent" => "FajuuFBot / beta"
+      ]
+    ]);
     
     /* Variables */
-    $this->curl = $curl;
+    $this->client = $client;
     $this->persona = null;
     $this->input = $this->input["entry"][0]["messaging"][0];
     $this->sender = $this->input["sender"]["id"];
