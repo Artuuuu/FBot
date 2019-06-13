@@ -16,6 +16,6 @@
   },
   "require": {
     "symfony/yaml": "^4.2",
-    "guzzlehttp/guzzle": "^0.1.0"
+    "guzzlehttp/guzzle": "^5.3.3"
   }
 }
