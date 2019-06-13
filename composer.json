@@ -20,10 +20,10 @@
   },
   "scripts": {
     "post-package-install": [
-      "echo post-package-install"
+      "php -r \"echo 'post-package-install';\""
     ],
     "post-install-cmd": [
-      "echo post-install-cmd"
+      "php -r \"echo 'post-install-cmd';\""
     ]
   }
 }
