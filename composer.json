@@ -17,13 +17,5 @@
   "require": {
     "symfony/yaml": "^4.2",
     "guzzlehttp/guzzle": "~6.0"
-  },
-  "scripts": {
-    "post-package-install": [
-      "php -r \"echo 'post-package-install';\""
-    ],
-    "post-install-cmd": [
-      "php -r \"echo 'post-install-cmd';\""
-    ]
   }
 }
