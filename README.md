@@ -2,7 +2,7 @@
 
 
 
-## Config
+## Quick Start
 ```php
 <?php require __DIR__ . '/vendor/autoload.php';
 
