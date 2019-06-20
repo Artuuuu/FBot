@@ -28,7 +28,7 @@ class FBot
       'exceptions' => false,
       "headers" => [
         "Content-Type" => "application/json",
-        "User-Agent" => "FajuuFBot / beta"
+        "User-Agent" => "FajuuFBot / dev"
       ],
     ]);
     
