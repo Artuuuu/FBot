@@ -7,8 +7,8 @@ class FBot
 {
   #
   #
-  public $data;  // what you sent to Facebook
-  public $response;  // what you got from Facebook
+  public $data;
+  public $response;
   private $config;
   private $client;
   #
