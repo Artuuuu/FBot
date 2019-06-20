@@ -49,7 +49,7 @@ class FBot
       "is_delivery" => (boolean)@$input["delivery"],
     ]), false);
 
-    $this->allow = (!@$this->received->message->is_echo and @$this->received->message) or $this->received->postback;
+    $this->allow = (!@$this->received->message->is_echo and @$this->received->message) or @$this->received->postback;
     #
   }
   #
