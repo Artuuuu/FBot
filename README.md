@@ -1,7 +1,9 @@
 # FBot
 
 
-```php
+
+## Simple sample
+```php index.php
 <?php require __DIR__ . '/vendor/autoload.php';
 
 $fbot = new Fajuu\FBot([
