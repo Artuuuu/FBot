@@ -12,6 +12,8 @@ $fbot = new Fajuu\FBot([
   "access_token" => "####",
   "locale_folder" => __DIR__."/locale",
 ]);
+
+// ...
 ```
 
 
